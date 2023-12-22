@@ -1,12 +1,14 @@
-from flask import Flask, redirect, render_template, request, session, url_for
-
+import datetime
+from flask import Flask, make_response, redirect, render_template, request, session, url_for
+from requests import Session
 """flask app that uses the userstore to register and login users, and stores the user id in the session"""
 
 client_id = "client_id"
 client_secret = "client_secret"
-redirect_uri = "http://localhost:5001/"
+redirect_uri = "http://localhost:5001/login"
 scope = "test-scope"
 
+auth_session = Session()
 
 def random_string_generator(length):
     import random
@@ -18,13 +20,14 @@ def random_string_generator(length):
 app = Flask(__name__)
 app.secret_key = random_string_generator(64)
 
-try:
-    with open('pepper.txt', 'r') as f:
-        pepper = f.read()
-except FileNotFoundError:
-    pepper = random_string_generator(64)
-    with open('pepper.txt', 'w') as f:
-        f.write(pepper)
+# region
+# try:
+#     with open('pepper.txt', 'r') as f:
+#         pepper = f.read()
+# except FileNotFoundError:
+#     pepper = random_string_generator(64)
+#     with open('pepper.txt', 'w') as f:
+#         f.write(pepper)
 
 
 # @app.route('/register', methods=['GET', 'POST'])
@@ -87,14 +90,28 @@ except FileNotFoundError:
 
 #     return render_template('user.html', username=user.name if user else None, email=user.email if user else None)
 
+# endregion
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # print(request.cookies.get('test'))
+    resp = make_response(render_template('index.html'))
+    # resp.set_cookie('test', 'test', expires=datetime.datetime.now() + datetime.timedelta(hours=1))
+    return resp
 
 
 @app.route('/login', methods=['GET'])
 def login():
+    if (code := request.args.get('code')) != None:
+        r = auth_session.post("http://localhost:5000/token", data={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": redirect_uri,
+            "client_id": client_id,
+            "client_secret": client_secret
+        })
+        user_r = auth_session.get("http://localhost:5000/api/user", headers={"Authorization": f"Bearer {r.json()['access_token']}"})
+        return user_r.text
     state = random_string_generator(16)
     session['state'] = state
     return redirect(f"http://localhost:5000/auth?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&state={state}")
