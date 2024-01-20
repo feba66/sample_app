@@ -1,0 +1,5 @@
+{
+    "prettier.configPath": "../.prettierrc",
+    "prettier.printWidth": 160,
+    "prettier.ignorePath": "../.prettierignore"
+}
