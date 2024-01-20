@@ -1,6 +1,7 @@
 ::root {
   --bg1: #feba66;
 }
+
 body {
   background-color: #464646;
   color: #feba66;
@@ -8,21 +9,25 @@ body {
   margin: 1em;
   padding: 0;
 }
+
 a {
   color: #feba66;
   text-decoration: none;
 }
+
 nav {
   display: flex;
   white-space: nowrap;
   padding: 0em 1em;
   margin: 0;
 }
+
 .navigation {
   display: flex;
   align-items: center;
   width: 100%;
 }
+
 .navl,
 .navr {
   display: flex;
@@ -31,12 +36,15 @@ nav {
   column-gap: 0.5em;
   align-items: center;
 }
+
 .navl {
   justify-content: flex-start;
 }
+
 .navr {
   justify-content: flex-end;
 }
+
 .navl li,
 .navr li {
   padding: 0.5em;

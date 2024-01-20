@@ -1,38 +1,36 @@
 <!DOCTYPE html>
+
 <head>
-  <title>{% block title %}{% endblock %} - User App</title>
+  <title>{% block title %}{% endblock %} - Sample App</title>
+  <!-- prettier-ignore-start -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <!-- prettier-ignore -->
   <link rel="apple-touch-icon" sizes="180x180" href="static//apple-touch-icon.png" />
+  <!-- prettier-ignore -->
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
+  <!-- prettier-ignore -->
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
   <link rel="manifest" href="/static/site.webmanifest" />
 </head>
+
 <body>
   <nav>
-    <div class="navtitle">
-      <h1><a href="{{ url_for('index') }}">User App</a></h1>
-    </div>
+    <a href="{{ url_for('index') }}">
+      <div class="navtitle">
+        <h1>Sample App</h1>
+      </div>
+    </a>
     <div class="navigation">
       <ul class="navl">
-        <li>
-          <a href="http://127.0.0.1:5000">Home</a>
-        </li>
+        <a href="http://127.0.0.1:5000"><li>Home</li></a>
       </ul>
       <ul class="navr">
         {% if username %}
-        <li>
-          <a href="{{ url_for('user') }}">{{username}}</a>
-        </li>
-        <li>
-          <a href="{{ url_for('logout') }}">Log Out</a>
-        </li>
+        <a href="{{ url_for('user') }}"><li>{{username}}</li></a>
+        <a href="{{ url_for('logout') }}"><li>Log Out</li></a>
         {% else %}
-        <li>
-          <a href="{{ url_for('login') }}">Log In</a>
-        </li>
-        <li>
-          <a href="{{ url_for('logout') }}">Log Out</a>
-        </li>
+        <a href="{{ url_for('login') }}"><li>Log In</li></a>
+        <a href="{{ url_for('logout') }}"><li>Log Out</li></a>
         {% endif %}
       </ul>
     </div>
